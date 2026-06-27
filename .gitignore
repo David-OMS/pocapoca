@@ -3,7 +3,8 @@ server/data.db
 server/data/
 server/node_modules/
 client/node_modules/
-client/dist/
+tobi.jpeg
+client/public/tobi.jpeg
 .env
 .env.*
 .DS_Store
