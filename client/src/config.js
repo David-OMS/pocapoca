@@ -2,7 +2,7 @@
 export const CONFIG = {
   herName: 'Jesutoni',
   herNickname: 'Poca',
-  yourName: 'Your Name',
+  yourName: 'princess tobi',
   yourPhoto: '/tobi.jpeg',
   areYouDoneAudio: '', // optional: e.g. '/are-you-done.mp3' after dropping it in client/public/
   birthdayMessage: `This isn't a love letter.
