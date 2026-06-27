@@ -1,9 +1,11 @@
 // Swap these when you're happy with the flow
+import yourPhoto from './assets/tobi.jpeg';
+
 export const CONFIG = {
   herName: 'Jesutoni',
   herNickname: 'Poca',
   yourName: 'princess tobi',
-  yourPhoto: '/tobi.jpeg',
+  yourPhoto,
   areYouDoneAudio: '', // optional: e.g. '/are-you-done.mp3' after dropping it in client/public/
   birthdayMessage: `This isn't a love letter.
 If it reads like one, then it's probably your imagination.

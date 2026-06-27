@@ -26,13 +26,15 @@ app.use(express.json({ limit: '32kb' }));
 app.get('/tobi.jpeg', (_req, res) => {
   const candidates = [
     process.env.PHOTO_FILE,
-    path.join(projectRoot, 'tobi.jpeg'),
+    path.join(projectRoot, 'client', 'dist', 'tobi.jpeg'),
     path.join(projectRoot, 'client', 'public', 'tobi.jpeg'),
+    path.join(projectRoot, 'client', 'src', 'assets', 'tobi.jpeg'),
+    path.join(projectRoot, 'tobi.jpeg'),
   ].filter(Boolean);
 
   const file = candidates.find((candidate) => fs.existsSync(candidate));
   if (!file) return res.status(404).end();
-  res.sendFile(file);
+  res.sendFile(path.resolve(file));
 });
 
 app.post('/api/wish', (req, res) => {
