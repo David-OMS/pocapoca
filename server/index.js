@@ -1,16 +1,30 @@
 import express from 'express';
 import cors from 'cors';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import db from './db.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.join(__dirname, '..');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'poca-test-reset';
 
 app.use(cors());
 app.use(express.json({ limit: '32kb' }));
+
+app.get('/tobi.jpeg', (_req, res) => {
+  const candidates = [
+    process.env.PHOTO_FILE,
+    path.join(projectRoot, 'tobi.jpeg'),
+    path.join(projectRoot, 'client', 'public', 'tobi.jpeg'),
+  ].filter(Boolean);
+
+  const file = candidates.find((candidate) => fs.existsSync(candidate));
+  if (!file) return res.status(404).end();
+  res.sendFile(file);
+});
 
 app.post('/api/wish', (req, res) => {
   const { wish } = req.body;

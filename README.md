@@ -25,11 +25,32 @@ npm run dev
 ## Production
 
 ```bash
-cd client && npm run build && cd ..
-cd server && npm start
+npm run build
+npm start
 ```
 
 Serve over **HTTPS** so mic works on her phone. Tell her to open in **Chrome**, not inside WhatsApp/Instagram.
+
+## Deploy on Railway
+
+1. Push this repo to GitHub and connect it in Railway.
+2. Leave **Root Directory** blank. Railway uses `railway.toml`:
+   - **Build:** `npm run build` (installs client + server, builds React, syncs photo)
+   - **Start:** `npm start`
+3. Add variables in Railway:
+   - `ADMIN_SECRET` — your private reset phrase
+   - `TOBI_PHOTO_BASE64` — required for GitHub deploys (photo is gitignored). On your PC:
+
+```powershell
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("c:\Users\user\Desktop\Big DABGS\tobi.jpeg"))
+```
+
+Copy the output into Railway → **Variables** → `TOBI_PHOTO_BASE64`.
+
+4. **Networking** → generate a public URL.
+5. Optional: add a **Volume** mounted at `/app/server` so wishes survive redeploys.
+
+Put your call photo at the project root as `tobi.jpeg` for local dev (gitignored). It is copied into the build automatically.
 
 ## Customize
 
