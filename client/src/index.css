@@ -944,7 +944,7 @@ button {
   left: 0;
   width: max-content;
   min-width: 100%;
-  max-width: 24rem;
+  max-width: 24rem; /* overridden on desktop */
   text-align: left;
   filter: none;
   color: var(--text);
@@ -1222,5 +1222,206 @@ button {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Desktop layout ─────────────────────────────────── */
+@media (min-width: 700px) {
+  /* General screens — wider content, bigger type */
+  .screen {
+    padding: 2.5rem;
+  }
+
+  .title {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    max-width: 30rem;
+  }
+
+  .btn {
+    font-size: 1.05rem;
+    padding: 0.9rem 2rem;
+  }
+
+  /* Profile select */
+  .profile-screen__title {
+    font-size: clamp(2.25rem, 5vw, 3rem);
+  }
+
+  .profile-list {
+    width: min(100%, 26rem);
+    gap: 1.25rem;
+  }
+
+  .profile-card {
+    font-size: 1.15rem;
+    padding: 1.35rem 1.5rem;
+  }
+
+  .imposter-message {
+    font-size: 1.2rem;
+    max-width: 28rem;
+  }
+
+  /* Gate */
+  .gate-screen__sub {
+    font-size: 1.1rem;
+    max-width: 30rem;
+  }
+
+  /* Incoming call — bigger phone frame */
+  .phone-frame {
+    width: min(100%, 26rem);
+  }
+
+  .phone-screen {
+    min-height: 40rem;
+  }
+
+  .caller-photo-large {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .caller-name-large {
+    font-size: 2.25rem;
+  }
+
+  /* Active call / recorder */
+  .call-active {
+    max-width: 36rem;
+    margin: 0 auto;
+  }
+
+  .caller-photo {
+    width: 9rem;
+    height: 9rem;
+  }
+
+  .waveform-wrap {
+    max-width: 26rem;
+  }
+
+  .passphrase-hint {
+    font-size: 1.25rem;
+  }
+
+  .mic-btn,
+  .stop-btn {
+    width: 5.5rem;
+    height: 5.5rem;
+    font-size: 1.85rem;
+  }
+
+  /* Message cards (tease/punchline) */
+  .message-card {
+    max-width: 32rem;
+    padding: 1.75rem;
+  }
+
+  .message-card p {
+    font-size: 1.15rem;
+    line-height: 1.65;
+  }
+
+  /* Birthday / letter */
+  .birthday-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  }
+
+  /*
+   * Content max-width is intentionally tied to the glasses width below (600px ≈ 37.5rem).
+   * This ensures the text reflows identically inside the lens clear-copy.
+   * For the letter-only screen we override this below.
+   */
+  .birthday-content {
+    max-width: 37.5rem;
+  }
+
+  .birthday-text {
+    font-size: 1.1rem;
+    line-height: 1.75;
+    margin: 2rem 0;
+  }
+
+  /* Birthday screen — wider reading area */
+  .birthday-screen--reading {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-bottom: calc(7rem + var(--safe-bottom));
+  }
+
+  /* Glasses reveal — wider on desktop to cover the content */
+  .draggable-glasses {
+    width: min(86vw, 600px);
+    height: min(27vw, 175px);
+    min-height: 140px;
+  }
+
+  /* Clear-copy inside lens must never be narrower than the real content */
+  .glasses-clear-copy {
+    max-width: none;
+  }
+
+  /* Letter-only screen (after wish) — can be wider since no glasses alignment needed */
+  .birthday-screen--reading .birthday-content--clear {
+    max-width: 52rem;
+  }
+
+  /* Done prompt */
+  .done-check-pop {
+    max-width: 28rem;
+  }
+
+  .remove-glasses-pop {
+    max-width: 32rem;
+  }
+
+  .read-done-btn {
+    width: min(100%, 22rem);
+    font-size: 1.1rem;
+  }
+
+  /* Cake */
+  .cake-svg {
+    width: 15rem;
+  }
+
+  .cake-wrap {
+    margin: 2.5rem auto;
+  }
+
+  .wish-form {
+    max-width: 28rem;
+  }
+
+  .wish-form--modal {
+    padding: 2rem;
+  }
+
+  .wish-form--modal h3 {
+    font-size: 1.35rem;
+  }
+
+  .wish-form textarea {
+    min-height: 8rem;
+    font-size: 1.05rem;
+  }
+
+  /* Enjoy finale */
+  .enjoy-message {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .enjoy-emoji {
+    font-size: 5rem;
+  }
+
+  .enjoy-back-btn {
+    max-width: 24rem;
+    font-size: 1.05rem;
   }
 }
