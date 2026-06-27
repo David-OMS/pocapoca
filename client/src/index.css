@@ -302,6 +302,8 @@ button {
   border-radius: 50%;
   border: 2px solid var(--pink);
   animation: ring-pulse 1.6s ease-out infinite;
+  z-index: 0;
+  pointer-events: none;
 }
 
 @keyframes ring-pulse {

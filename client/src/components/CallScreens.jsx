@@ -1,4 +1,5 @@
 import { CONFIG } from '../config';
+import { CallPhoto } from './CallPhoto';
 
 export function ProfileSelect({ onBirthdayGirl, onNotBirthdayGirl }) {
   return (
@@ -54,8 +55,6 @@ export function IncomingCall({
   declineRoast,
   onDeclineAttempt,
 }) {
-  const initial = CONFIG.yourName.charAt(0).toUpperCase();
-
   return (
     <div className="screen call-screen-outer">
       <div className="phone-frame">
@@ -72,11 +71,7 @@ export function IncomingCall({
           <p className="incoming-label">Incoming call</p>
 
           <div className="caller-avatar-wrap">
-            {CONFIG.yourPhoto ? (
-              <img className="caller-photo-large" src={CONFIG.yourPhoto} alt={CONFIG.yourName} />
-            ) : (
-              <div className="caller-photo-large caller-photo--placeholder">{initial}</div>
-            )}
+            <CallPhoto className="caller-photo-large" alt={CONFIG.yourName} />
             <span className="caller-avatar-ring" aria-hidden />
           </div>
 

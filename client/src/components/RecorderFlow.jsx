@@ -1,7 +1,5 @@
-import {
-  formatDuration,
-} from '../hooks/useVoiceMeter';
 import { CONFIG } from '../config';
+import { CallPhoto } from './CallPhoto';
 
 export default function RecorderScreen({
   attempt,
@@ -12,8 +10,6 @@ export default function RecorderScreen({
   onStop,
   showMicHelper = false,
 }) {
-  const initial = CONFIG.yourName.charAt(0).toUpperCase();
-
   return (
     <div className="screen call-active">
       <div className="call-top">
@@ -24,11 +20,7 @@ export default function RecorderScreen({
         <span>{CONFIG.yourName}</span>
       </div>
 
-      {CONFIG.yourPhoto ? (
-        <img className="caller-photo" src={CONFIG.yourPhoto} alt="" />
-      ) : (
-        <div className="caller-photo caller-photo--placeholder">{initial}</div>
-      )}
+      <CallPhoto className="caller-photo" alt={CONFIG.yourName} />
 
       <p className="passphrase-hint">
         {attempt === 1 ? 'You know what to say.' : 'Again. Louder this time.'}

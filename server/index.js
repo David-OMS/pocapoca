@@ -109,8 +109,9 @@ app.get('/api/open-when/opens', (_req, res) => {
 });
 
 const clientDist = path.join(__dirname, '..', 'client', 'dist');
-app.use(express.static(clientDist));
+app.use(express.static(clientDist, { index: false }));
 app.get('*', (_req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.sendFile(path.join(clientDist, 'index.html'));
 });
 
