@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reset test data</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: system-ui, sans-serif;
+        background: #06120e;
+        color: #f8fafc;
+        padding: 1rem;
+      }
+      main {
+        width: min(100%, 22rem);
+        padding: 1.25rem;
+        border-radius: 1rem;
+        background: #0c221c;
+        border: 1px solid rgba(236, 72, 153, 0.35);
+      }
+      h1 {
+        font-size: 1.1rem;
+        margin: 0 0 0.5rem;
+        color: #f9a8d4;
+      }
+      p {
+        margin: 0 0 1rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: rgba(248, 250, 252, 0.75);
+      }
+      label {
+        display: block;
+        font-size: 0.8rem;
+        margin-bottom: 0.35rem;
+        color: rgba(248, 250, 252, 0.7);
+      }
+      input {
+        width: 100%;
+        padding: 0.65rem 0.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #143d32;
+        color: inherit;
+        font: inherit;
+        margin-bottom: 0.85rem;
+      }
+      button {
+        width: 100%;
+        padding: 0.75rem;
+        border: 0;
+        border-radius: 0.65rem;
+        background: #ec4899;
+        color: white;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .status {
+        margin-top: 0.85rem;
+        font-size: 0.88rem;
+        min-height: 1.25rem;
+      }
+      .status--ok {
+        color: #86efac;
+      }
+      .status--err {
+        color: #fca5a5;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Clear wish data (testing only)</h1>
+      <p>
+        This page is not linked from the birthday site. Clears saved wishes so she
+        gets the full flow again on refresh.
+      </p>
+      <label for="secret">Admin secret</label>
+      <input id="secret" type="password" autocomplete="off" />
+      <button type="button" id="reset">Clear wishes</button>
+      <p class="status" id="status" role="status"></p>
+    </main>
+    <script>
+      const statusEl = document.getElementById('status');
+      const secretEl = document.getElementById('secret');
+      document.getElementById('reset').addEventListener('click', async () => {
+        statusEl.textContent = 'Clearing…';
+        statusEl.className = 'status';
+        try {
+          const res = await fetch('/api/admin/reset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ secret: secretEl.value }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || 'Reset failed');
+          statusEl.textContent = 'Done — wishes cleared. Reload her page to test fresh.';
+          statusEl.className = 'status status--ok';
+        } catch (err) {
+          statusEl.textContent = err.message;
+          statusEl.className = 'status status--err';
+        }
+      });
+    </script>
+  </body>
+</html>
