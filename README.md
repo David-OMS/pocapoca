@@ -48,7 +48,7 @@ Serve over **HTTPS** so mic works on her phone. Tell her to open in **Chrome**, 
 Copy the output into Railway → **Variables** → `TOBI_PHOTO_BASE64`.
 
 4. **Networking** → generate a public URL.
-5. Optional: add a **Volume** mounted at `/app/server` so wishes survive redeploys.
+5. Optional: add a **Volume** mounted at `/app/server/data` so wishes survive redeploys.
 
 Put your call photo at the project root as `tobi.jpeg` for local dev (gitignored). It is copied into the build automatically.
 
@@ -85,12 +85,12 @@ set ADMIN_SECRET=your-private-phrase
 npm start
 ```
 
-### Option B — delete the database file
+### Option B — delete the data folder
 
-Stop the server, delete `server/data.db`, start again. SQLite recreates an empty DB.
+Stop the server, delete `server/data/`, start again. A fresh store is created automatically.
 
 ```powershell
-Remove-Item "server\data.db"
+Remove-Item -Recurse -Force "server\data"
 npm start
 ```
 
