@@ -23,18 +23,33 @@ const ADMIN_SECRET = process.env.ADMIN_SECRET || 'poca-test-reset';
 app.use(cors());
 app.use(express.json({ limit: '32kb' }));
 
-app.get('/tobi.jpeg', (_req, res) => {
-  const candidates = [
-    process.env.PHOTO_FILE,
-    path.join(projectRoot, 'client', 'dist', 'tobi.jpeg'),
-    path.join(projectRoot, 'client', 'public', 'tobi.jpeg'),
-    path.join(projectRoot, 'client', 'src', 'assets', 'tobi.jpeg'),
-    path.join(projectRoot, 'tobi.jpeg'),
-  ].filter(Boolean);
+const callPhotoCandidates = [
+  process.env.PHOTO_FILE,
+  path.join(projectRoot, 'client', 'src', 'assets', 'tobi.jpeg'),
+  path.join(projectRoot, 'client', 'public', 'tobi.jpeg'),
+  path.join(projectRoot, 'tobi.jpeg'),
+];
 
-  const file = candidates.find((candidate) => fs.existsSync(candidate));
+function resolveCallPhoto() {
+  return callPhotoCandidates.find((candidate) => candidate && fs.existsSync(candidate));
+}
+
+const callPhotoPath = resolveCallPhoto();
+if (callPhotoPath) {
+  console.log(`Call photo ready: ${callPhotoPath}`);
+} else {
+  console.warn('Call photo missing — incoming call will show initials only.');
+}
+
+app.get('/call-photo.jpeg', (_req, res) => {
+  const file = resolveCallPhoto();
   if (!file) return res.status(404).end();
+  res.type('jpeg');
   res.sendFile(path.resolve(file));
+});
+
+app.get('/tobi.jpeg', (_req, res) => {
+  res.redirect(302, '/call-photo.jpeg');
 });
 
 app.post('/api/wish', (req, res) => {
