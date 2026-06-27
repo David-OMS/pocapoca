@@ -108,11 +108,49 @@ app.get('/api/open-when/opens', (_req, res) => {
   res.json(listOpenWhenOpens());
 });
 
-const clientDist = path.join(__dirname, '..', 'client', 'dist');
-app.use(express.static(clientDist, { index: false }));
-app.get('*', (_req, res) => {
+const clientDist = path.join(projectRoot, 'client', 'dist');
+const distIndex = path.join(clientDist, 'index.html');
+
+if (fs.existsSync(distIndex)) {
+  const assetDir = path.join(clientDist, 'assets');
+  const assets = fs.existsSync(assetDir) ? fs.readdirSync(assetDir) : [];
+  console.log(`Client build ready (${assets.length} assets in dist)`);
+} else {
+  console.error('WARNING: client/dist/index.html missing at startup');
+}
+
+app.use(
+  express.static(clientDist, {
+    index: false,
+    maxAge: '7d',
+    setHeaders(res, filePath) {
+      if (filePath.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+      }
+    },
+  }),
+);
+
+app.get('*', (req, res, next) => {
+  if (
+    req.path.startsWith('/api/') ||
+    req.path.startsWith('/assets/') ||
+    req.path === '/call-photo.jpeg' ||
+    req.path === '/tobi.jpeg' ||
+    req.path === '/__reset' ||
+    /\.[a-z0-9]+$/i.test(req.path)
+  ) {
+    return res.status(404).type('text/plain').send('Not found');
+  }
+
+  if (!fs.existsSync(distIndex)) {
+    return res.status(503).type('text/plain').send('Site is still building. Refresh in a moment.');
+  }
+
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
-  res.sendFile(path.join(clientDist, 'index.html'));
+  res.sendFile(distIndex, (err) => {
+    if (err) next(err);
+  });
 });
 
 app.listen(PORT, () => {
